@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-Sketch Grid Project</title>
+    <style>
+        /* Basic reset and setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Controls section */
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Grid container */
+        .grid-container {
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+            border: 2px solid #333;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* Grid squares */
+        .grid-square {
+            /* Size will be set by JavaScript */
+            border: 1px solid #ddd;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Etch-a-Sketch Grid Project</h1>
+    <p>Hover over the squares to draw!</p>
+    
+    <div class="controls">
+        <button id="change-size">Change Grid Size</button>
+        <button id="clear">Clear Grid</button>
+    </div>
+    
+    <!-- This is where our grid will be created -->
+    <div class="grid-container" id="grid-container">
+        <!-- JavaScript will add squares here -->
+    </div>
+
+    <script>
+        // Get elements from the page
+        const gridContainer = document.getElementById('grid-container');
+        const changeSizeBtn = document.getElementById('change-size');
+        const clearBtn = document.getElementById('clear');
+
+        // Set starting grid size (16x16)
+        let gridSize = 16;
+
+        // Function to create the grid
+        function createGrid(size) {
+            // First, clear any existing grid
+            gridContainer.innerHTML = '';
+            
+            // Calculate how big each square should be
+            // The container is 600px wide, so divide by number of squares
+            const squareSize = 600 / size;
+            
+            // Create all the squares
+            for (let i = 0; i < size * size; i++) {
+                // Create a new div element
+                const square = document.createElement('div');
+                
+                // Add the class for styling
+                square.classList.add('grid-square');
+                
+                // Set the size
+                square.style.width = squareSize + 'px';
+                square.style.height = squareSize + 'px';
+                
+                // Add hover effect - when mouse enters the square
+                square.addEventListener('mouseenter', function() {
+                    // Change background color to black when hovered
+                    this.style.backgroundColor = 'black';
+                });
+                
+                // Add the square to the grid container
+                gridContainer.appendChild(square);
+            }
+        }
+
+        // Button to change grid size
+        changeSizeBtn.addEventListener('click', function() {
+            // Ask user for new grid size
+            let newSize = prompt('How many squares per side? (Max: 100)');
+            
+            // Convert to a number
+            newSize = parseInt(newSize);
+            
+            // Check if it's a valid number
+            if (newSize > 0 && newSize <= 100) {
+                gridSize = newSize;
+                createGrid(gridSize);
+            } else {
+                alert('Please enter a number between 1 and 100');
+            }
+        });
+
+        // Button to clear the grid
+        clearBtn.addEventListener('click', function() {
+            // Get all squares
+            const squares = document.querySelectorAll('.grid-square');
+            
+            // Set each square back to white
+            squares.forEach(square => {
+                square.style.backgroundColor = 'white';
+            });
+        });
+
+        // Create initial grid when page loads
+        createGrid(gridSize);
+    </script>
+</body>
+</html>
